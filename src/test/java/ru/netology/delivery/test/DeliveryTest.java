@@ -9,8 +9,7 @@ import ru.netology.delivery.data.DataGenerator;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -42,17 +41,16 @@ class DeliveryTest {
         $("[data-test-id='success-notification'] .notification__content")
                 .shouldHave(exactText("Встреча успешно запланирована на " + firstMeetingDate))
                 .shouldBe(visible);
-        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        $("[data-test-id=date] input").setValue(secondMeetingDate);
-        $(byText("Запланировать")).click();
-        $("[data-test-id='replan-notification'] .notification__content")
-                .shouldHave(exactText("У вас уже запланирована всреча на другую дату. Перепланировать?"))
-                .shouldBe(visible);
-        $("[data-test-id='replan-notification'] button").click();
-        $("[data-test-id='success-notification'] .notification__content")
-                .shouldHave(exactText("Встреча успешно запланирована на " + secondMeetingDate))
-                .shouldBe(visible);
-
+        //Replan
+        $("[data-test-id='date'] input").doubleClick().sendKeys(Keys.DELETE);
+        $("[data-test-id='date'] input").setValue(secondMeetingDate);
+        $("button.button").click();
+        $("[data-test-id=replan-notification] .notification__content").
+                shouldBe(visible,Duration.ofSeconds(15)).
+                shouldHave(text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
+        $("[data-test-id= replan-notification] button").click();
+        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15)).
+                shouldHave(text("Встреча успешно запланирована на " + secondMeetingDate));
 
     }
 
