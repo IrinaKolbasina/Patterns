@@ -1,5 +1,7 @@
 package ru.netology.delivery.test;
 
+import com.github.javafaker.Faker;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +10,9 @@ import org.openqa.selenium.Keys;
 import ru.netology.delivery.data.DataGenerator;
 
 import java.time.Duration;
+import java.util.Locale;
 
+import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
